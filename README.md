@@ -1,101 +1,85 @@
 # 💳 WalletGuard AI
 
-A smart full-stack personal finance web application that helps users predict how long their balance can last, detect risky spending habits, simulate savings decisions, and improve budgeting through real-time analytics.
+<p align="center">
+Smart AI-powered personal finance assistant for budgeting, spending control, and wallet health analytics.
+</p>
+
+<p align="center">
+🚀 Live Demo • 📊 Analytics • 💡 Smart Insights • 🌍 Deployed Full Stack
+</p>
 
 ---
 
-## 🚀 Live Demo
+## 🌐 Live Links
 
-Frontend: [https://expense-crash-predictor.vercel.app/]  
-Backend API Docs: [https://expense-backend-anh3.onrender.com/docs]
-
----
-
-## 📌 Problem It Solves
-
-Many people track expenses only after overspending happens.
-
-WalletGuard AI focuses on **prevention** by helping users understand:
-
-- how many days their money may last
-- whether spending pace is risky
-- where unusual expense spikes happened
-- how savings change future runway
-- overall wallet health score
+| Platform | Link |
+|---|---|
+| 🚀 Frontend | YOUR_VERCEL_LINK |
+| ⚙️ Backend API Docs | https://expense-backend-anh3.onrender.com/docs |
+| 💻 Repository | YOUR_GITHUB_REPO_LINK |
 
 ---
 
-## ✨ Key Features
+## 📌 Overview
 
-### 💸 Expense Runway Predictor
-Estimates how many days your current balance may last based on recent expenses.
+WalletGuard AI helps users understand **how long their money can last**, detect risky spending habits, simulate better decisions, and improve financial discipline through real-time scoring and insights.
 
-### 🚨 Risk Detection
-Classifies financial risk as:
+---
 
-- Low
-- Medium
-- High
+## ✨ Core Features
 
-### 💡 Smart Insights
-Provides readable spending guidance and playful financial tips.
+### 💸 Budget Runway Prediction
+Estimate how many days current balance may survive.
 
-### 🚀 What-If Savings Simulator
-Example:
+### 🚨 Risk Level Detection
+Low / Medium / High spending risk alerts.
 
-If you save ₹50/day, how many extra days do you gain?
+### 💡 Smart Insights Engine
+Readable recommendations based on spending behavior.
+
+### 🚀 What-If Simulator
+Test how saving ₹X/day changes financial runway.
 
 ### 📅 Survival Planner
-Calculates safe daily budget for a target number of days.
+Know safe daily budget for target survival days.
 
 ### ⚠️ Overspending Detector
-Warns if your average daily spending is above safe pace.
+Compare spending pace against safe limits.
 
 ### 📈 Spending Spike Detector
-Finds abnormal expense days compared to your average pattern.
+Detect unusually high spending days.
 
 ### 💳 Wallet Score Dashboard
-Gives an easy-to-understand wallet health score out of 100.
+Single score summarizing wallet health.
 
-### 💾 Data Persistence
-Remembers previous inputs using browser local storage.
+### 💾 Data Memory
+Auto-saves previous inputs using local storage.
 
-### 📊 Interactive Charts
-Visualizes expense patterns using charts.
+### 📊 Expense Charts
+Visualize spending trends instantly.
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- HTML
-- CSS
-- JavaScript
-- Chart.js
-
-### Backend
-- Python
-- FastAPI
-- Uvicorn
-
-### Deployment
-- Frontend: Vercel
-- Backend: Render
-
-### Version Control
-- Git
-- GitHub
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Charts | Chart.js |
+| Backend | Python, FastAPI |
+| Server | Uvicorn |
+| Hosting | Vercel + Render |
+| Version Control | Git + GitHub |
 
 ---
 
-## 📂 Project Structure
+## 📂 Structure
 
 ```bash
-project/
-│── backend/
-│   ├── main.py
-│   ├── logic.py
-│   └── requirements.txt
-│
-│── frontend/
-│   └── index.html
+backend/
+ ├── main.py
+ ├── logic.py
+ └── requirements.txt
+
+frontend/
+ └── index.html
