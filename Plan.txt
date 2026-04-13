@@ -1,0 +1,14 @@
+| Status     | Module    | Name                           | What It Includes                                                                      |
+| ---------- | --------- | ------------------------------ | ------------------------------------------------------------------------------------- |
+| ✅ Done     | Module 1  | Project Setup                  | Folder structure, FastAPI install, backend runs, frontend file created                |
+| ✅ Done     | Module 2  | Core Prediction Engine         | Days-left logic, average expense calculation, risk level, FastAPI testing via `/docs` |
+| ⏳ Next     | Module 3  | Frontend ↔ Backend Integration | HTML form, JS fetch request, show results on webpage, connect API                     |
+| 🔜 Pending  | Module 4  | UI / UX Design                 | Clean modern layout, responsive styling, colors, better user experience               |
+| 🔜 Pending  | Module 5  | Smart Insights Engine          | Recommendations, spending behavior hints, smarter logic                               |
+| 🔜 Pending  | Module 6  | What-If Simulator              | Reduce spending and see new days-left instantly                                       |
+| 🔜 Pending  | Module 7  | Data Visualization             | Charts for expenses, trends, crash prediction graph                                   |
+| 🔜 Pending  | Module 8  | Expense Input Upgrade          | Better expense entry (daily logs, categories, optional history)                       |
+| 🔜 Pending  | Module 9  | Data Storage                   | Save user data using local storage / SQLite / cloud DB                                |
+| 🔜 Pending  | Module 10 | Authentication (Optional)      | Login / signup if needed                                                              |
+| 🔜 Pending  | Module 11 | Deployment                     | Host backend + frontend online                                                        |
+| 🔜 Pending  | Module 12 | Resume + Portfolio Polish      | README, screenshots, project description, GitHub ready                                |

@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "logic": "^0.0.3",
+    "pydantic": "^0.0.1-security",
+    "typing": "^0.1.9"
+  }
+}

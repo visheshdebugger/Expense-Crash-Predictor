@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Expense Crash Predictor</title>
+
+<!-- Premium Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+
+    padding:40px 20px;
+    position:relative;
+
+    background:linear-gradient(-45deg,#0f172a,#1e293b,#0f172a,#111827);
+    background-size:400% 400%;
+    animation:bgMove 12s ease infinite;
+}
+
+/* Background animation */
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Floating currency symbols */
+.money{
+    position:absolute;
+    color:white;
+    opacity:0.05;
+    font-size:42px;
+    animation:floatUp linear infinite;
+    user-select:none;
+}
+
+.money1{
+    left:10%;
+    animation-duration:14s;
+}
+
+.money2{
+    left:25%;
+    animation-duration:18s;
+    font-size:30px;
+}
+
+.money3{
+    left:50%;
+    animation-duration:16s;
+}
+
+.money4{
+    left:75%;
+    animation-duration:20s;
+    font-size:36px;
+}
+
+.money5{
+    left:90%;
+    animation-duration:13s;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:translateY(100vh);
+    }
+    100%{
+        transform:translateY(-120vh);
+    }
+}
+/*Insights*/
+.insight-title{
+    margin-top:14px;
+    margin-bottom:10px;
+    font-weight:700;
+    color:#facc15;
+}
+
+.insight-item{
+    background:rgba(255,255,255,0.06);
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:8px;
+    font-size:14px;
+    line-height:1.4;
+}
+/* Main card */
+.card{
+    position:relative;
+    z-index:10;
+    max-height:90vh;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+    width:100%;
+    max-width:460px;
+    padding:32px;
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+        0 0 25px rgba(59,130,246,0.20),
+        0 0 70px rgba(59,130,246,0.08);
+
+    color:white;
+}
+
+/* Title */
+h1{
+    text-align:center;
+    font-size:34px;
+    line-height:1.2;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#d1d5db;
+    font-size:14px;
+    margin-bottom:24px;
+}
+
+/* Labels */
+label{
+    display:block;
+    margin-top:14px;
+    margin-bottom:8px;
+    font-weight:600;
+    font-size:15px;
+}
+
+/* Inputs */
+input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.08);
+    color:white;
+    font-size:15px;
+}
+
+input::placeholder{
+    color:#cbd5e1;
+}
+
+input:focus{
+    outline:none;
+    border-color:#60a5fa;
+    box-shadow:0 0 12px rgba(96,165,250,0.35);
+}
+
+/* Button */
+button{
+    width:100%;
+    margin-top:24px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#2563eb,#06b6d4);
+    color:white;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,0.35);
+}
+
+/* Result box */
+.result{
+    margin-top:22px;
+    padding:14px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.08);
+
+    opacity:0;
+    transform:translateY(12px);
+    transition:0.35s ease;
+}
+
+.result.show{
+    opacity:1;
+    transform:translateY(0);
+}
+/*Chart */
+.chart-wrap{
+    margin-top:18px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,0.10);
+
+    height:0;
+    opacity:0;
+    overflow:hidden;
+
+    transition:0.5s ease;
+}
+
+.chart-wrap.show{
+    height:280px;
+    opacity:1;
+}
+
+.stat{
+    margin-bottom:10px;
+    font-size:16px;
+}
+
+/* Risk colors */
+.low{
+    color:#22c55e;
+    font-weight:700;
+}
+
+.medium{
+    color:#f59e0b;
+    font-weight:700;
+}
+
+.high{
+    color:#ef4444;
+    font-weight:700;
+}
+
+/* Footer */
+.footer{
+    text-align:center;
+    margin-top:18px;
+    font-size:12px;
+    color:#d1d5db;
+}
+/*simulation box*/
+#simulationBox,
+#plannerBox{
+    margin-top:0;
+    padding-top:0;
+    border-top:none;
+
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+
+    transition:0.4s ease;
+}
+
+#simulationBox.show{
+    
+    padding:12px;
+    border-radius:12px;
+    color:#93c5fd;
+    background:rgba(59,130,246,0.08);
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,0.10);
+    max-height:120px;
+    opacity:1;
+}
+
+#plannerBox.show{
+
+    color:#86efac;
+    background:rgba(16,185,129,0.08);
+    padding:12px;
+    border-radius:12px;
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,0.10);
+
+    max-height:120px;
+    opacity:1;
+}
+/*Overspend Box*/
+#overspendBox{
+
+    color:#fcd34d;
+    background:rgba(245,158,11,0.08);
+    padding:12px;
+    border-radius:12px;
+    margin-top:0;
+    padding-top:0;
+    border-top:none;
+
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+
+    transition:0.4s ease;
+    font-size:15px;
+    line-height:1.5;
+}
+
+#overspendBox.show{
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,0.10);
+
+    max-height:120px;
+    opacity:1;
+}
+
+/*Spike Box*/
+#spikeBox{
+    margin-top:0;
+    padding-top:0;
+    border-top:none;
+
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+
+    transition:0.4s ease;
+}
+
+.reset-btn{
+    margin-top:10px;
+    background:rgba(255,255,255,0.08);
+    color:#fca5a5;
+    border:1px solid rgba(255,255,255,0.10);
+}
+
+.reset-btn:hover{
+    background:rgba(239,68,68,0.15);
+}
+
+#spikeBox.show{
+    margin-top:14px;
+    padding:12px;
+    border-top:1px solid rgba(255,255,255,0.10);
+    border-radius:12px;
+
+    max-height:140px;
+    opacity:1;
+
+    color:#fcd34d;
+    background:rgba(245,158,11,0.08);
+}
+
+/*Dashboard*/
+#scoreBox{
+    margin-bottom:14px;
+    padding:14px;
+    border-radius:14px;
+
+    background:linear-gradient(90deg,
+        rgba(59,130,246,0.18),
+        rgba(6,182,212,0.12));
+
+    border:1px solid rgba(255,255,255,0.10);
+
+    text-align:center;
+    font-size:16px;
+    line-height:1.6;
+    color:white;
+
+    display:none;
+}
+/* Mobile */
+@media(max-width:500px){
+
+    body{
+        padding:16px;
+    }
+
+    .card{
+        padding:24px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Floating Background Elements -->
+<div class="money money1">₹</div>
+<div class="money money2">$</div>
+<div class="money money3">💸</div>
+<div class="money money4">₹</div>
+<div class="money money5">€</div>
+
+<!-- Main Card -->
+<div class="card">
+
+<h1>💸 Expense Crash Predictor</h1>
+<p class="subtitle">Know how long your money may last</p>
+
+<label>Current Balance (₹)</label>
+<input type="number" id="balance" placeholder="Enter your balance">
+
+<label>Expenses (comma separated)</label>
+<input type="text" id="expenses" placeholder="100,200,150">
+
+<label>Reduce Daily Spending By (₹)</label>
+<input type="number" id="cutAmount" placeholder="Optional e.g. 50">
+
+<label>Days To Survive</label>
+<input type="number" id="surviveDays" placeholder="Optional e.g. 10">
+
+<button onclick="predictExpense()">Predict Now</button>
+<button onclick="clearSavedData()" class="reset-btn">Clear Saved Data</button>
+
+<div class="result" id="resultBox">
+    <div id="scoreBox"></div>
+    <div class="stat" id="daysText"></div>
+    <div class="stat" id="riskText"></div>
+
+    <div class="insight-title">💡 Smart Insights</div>
+    <div id="insightList"></div>
+    <div id="simulationBox"></div>
+    <div id="plannerBox"></div>
+    <div id="overspendBox"></div>
+    <div id="spikeBox"></div>
+
+    <div class="chart-wrap">
+        <canvas id="expenseChart"></canvas>
+    </div>
+</div>
+
+<div class="footer">
+Built with Python + FastAPI
+</div>
+
+</div>
+
+<script>
+
+let expenseChart;
+async function predictExpense(){
+
+    let balance = parseFloat(document.getElementById("balance").value);
+
+    let expenses = document.getElementById("expenses").value
+        .split(",")
+        .map(item => parseFloat(item.trim()))
+        .filter(item => !isNaN(item));
+
+        /*Cut Amount*/
+    let cutAmount = parseFloat(
+    document.getElementById("cutAmount").value
+) || 0;
+
+    let surviveDays = parseFloat(
+    document.getElementById("surviveDays").value
+) || 0;
+
+localStorage.setItem("balance", balance);
+localStorage.setItem("expenses", document.getElementById("expenses").value);
+localStorage.setItem("cutAmount", cutAmount);
+localStorage.setItem("surviveDays", surviveDays);
+
+    /* Validation */
+    if(isNaN(balance)){
+        alert("Please enter valid balance.");
+        return;
+    }
+
+    try{
+
+        const response = await fetch("http://127.0.0.1:8000/predict",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                balance:balance,
+                expenses:expenses
+            })
+        });
+
+        const data = await response.json();
+
+        /*Dashboard*/
+        let score = 100;
+
+/* Based on days left */
+if(data.days_left < 5){
+    score -= 35;
+}
+else if(data.days_left < 10){
+    score -= 20;
+}
+else if(data.days_left < 20){
+    score -= 10;
+}
+
+/* Based on risk */
+if(data.risk === "HIGH"){
+    score -= 20;
+}
+else if(data.risk === "MEDIUM"){
+    score -= 10;
+}
+
+/* Based on spikes */
+if(expenses.length > 1){
+
+    let maxExpense = Math.max(...expenses);
+
+    let avgExpense =
+        expenses.reduce((a,b)=>a+b,0) / expenses.length;
+
+    if(maxExpense > avgExpense * 1.5){
+        score -= 10;
+    }
+}
+
+/* Limit score */
+if(score < 0){
+    score = 0;
+}
+
+let scoreText = "💳 Wallet Score: <strong>" + score + "/100</strong><br>";
+
+if(score >= 80){
+    scoreText += "Excellent financial control 😎";
+}
+else if(score >= 60){
+    scoreText += "Good, but some caution needed 👍";
+}
+else if(score >= 40){
+    scoreText += "Warning zone. Tighten spending ⚠️";
+}
+else{
+    scoreText += "Critical pressure. Rescue mode needed 🚨";
+}
+
+const scoreBox = document.getElementById("scoreBox");
+scoreBox.innerHTML = scoreText;
+scoreBox.style.display = "block";
+
+        let riskClass = "low";
+
+        if(data.risk === "MEDIUM"){
+            riskClass = "medium";
+        }
+
+        if(data.risk === "HIGH"){
+            riskClass = "high";
+        }
+
+        document.getElementById("daysText").innerHTML =
+    "📅 Days Left: <strong>" + data.days_left + "</strong>";
+
+
+document.getElementById("riskText").innerHTML =
+    '⚠️ Risk Level: <span class="' + riskClass + '">' + data.risk + '</span>';
+
+let insightHTML = "";
+
+data.insights.forEach(function(item){
+    insightHTML += '<div class="insight-item">• ' + item + '</div>';
+});
+
+document.getElementById("insightList").innerHTML = insightHTML;
+
+/*Simulation Text*/
+let simulationText = "";
+
+if(cutAmount > 0){
+
+    let avgExpense = expenses.reduce((a,b)=>a+b,0) / expenses.length;
+
+    let newAvg = avgExpense - cutAmount;
+
+    if(newAvg < 1){
+        newAvg = 1;
+    }
+
+    let newDays = (balance / newAvg).toFixed(1);
+
+    let gained = (newDays - data.days_left).toFixed(1);
+
+    simulationText =
+        "🚀 If you save ₹" + cutAmount +
+        "/day, you may last <strong>" +
+        newDays +
+        "</strong> days (+"
+        + gained +
+        " days)";
+}
+
+const simBox = document.getElementById("simulationBox");
+simBox.innerHTML = simulationText;
+
+if(simulationText){
+    simBox.classList.add("show");
+}else{
+    simBox.classList.remove("show");
+}
+
+/*Planner Text*/
+let plannerText = "";
+
+if(surviveDays > 0){
+
+    let safeBudget = (balance / surviveDays).toFixed(1);
+
+    plannerText =
+        "💸 To survive <strong>" +
+        surviveDays +
+        "</strong> days, keep spending near <strong>₹" +
+        safeBudget +
+        "/day</strong>";
+}
+const plannerBox = document.getElementById("plannerBox");
+plannerBox.innerHTML = plannerText;
+
+if(plannerText){
+    plannerBox.classList.add("show");
+}else{
+    plannerBox.classList.remove("show");
+}
+
+/*Spike Text*/
+let spikeText = "";
+
+if(expenses.length > 1){
+
+    let maxExpense = Math.max(...expenses);
+
+    let spikeDay = expenses.indexOf(maxExpense) + 1;
+
+    let avgExpense =
+        expenses.reduce((a,b)=>a+b,0) / expenses.length;
+
+    let extra =
+        (((maxExpense - avgExpense) / avgExpense) * 100).toFixed(1);
+
+    if(maxExpense > avgExpense){
+
+        spikeText =
+            "⚠️ Spending spike on <strong>Day " +
+            spikeDay +
+            "</strong> (₹" +
+            maxExpense +
+            ").<br>" +
+            extra +
+            "% above your average spending.";
+    }
+}
+
+const spikeBox = document.getElementById("spikeBox");
+
+spikeBox.innerHTML = spikeText;
+
+if(spikeText){
+    spikeBox.classList.add("show");
+}else{
+    spikeBox.classList.remove("show");
+}
+
+/*Over spend logic*/
+let overspendText = "";
+
+if(surviveDays > 0 && expenses.length > 0){
+
+    let safeBudget = balance / surviveDays;
+
+    let avgExpense =
+        expenses.reduce((a,b)=>a+b,0) / expenses.length;
+
+    if(avgExpense > safeBudget){
+
+        let extra =
+            (((avgExpense - safeBudget) / safeBudget) * 100).toFixed(1);
+
+        overspendText =
+            "⚠️ You are spending <strong>" +
+            extra +
+            "%</strong> above your safe daily pace.";
+    }
+    else{
+
+        overspendText =
+            "✅ Your spending is within a healthy survival range.";
+    }
+}
+
+const overspendBox = document.getElementById("overspendBox");
+
+overspendBox.innerHTML = overspendText;
+
+if(overspendText){
+    overspendBox.classList.add("show");
+}else{
+    overspendBox.classList.remove("show");
+}
+
+const ctx = document.getElementById("expenseChart").getContext("2d");
+
+if(expenseChart){
+    expenseChart.destroy();
+}
+
+let labels = expenses.map((_, index) => "Day " + (index + 1));
+
+expenseChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Expenses ₹",
+            data: expenses,
+            borderRadius: 12,
+            borderWidth: 1,
+            backgroundColor: [
+                "rgba(59,130,246,0.8)",
+                "rgba(6,182,212,0.8)",
+                "rgba(139,92,246,0.8)",
+                "rgba(16,185,129,0.8)",
+                "rgba(245,158,11,0.8)",
+                "rgba(239,68,68,0.8)"
+            ],
+            borderColor: [
+                "#60a5fa",
+                "#22d3ee",
+                "#a78bfa",
+                "#34d399",
+                "#fbbf24",
+                "#f87171"
+            ],
+            hoverBackgroundColor: [
+                "#3b82f6",
+                "#06b6d4",
+                "#8b5cf6",
+                "#10b981",
+                "#f59e0b",
+                "#ef4444"
+            ]
+        }]
+    },
+
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#ffffff",
+                    font: {
+                        size: 13,
+                        weight: "bold"
+                    }
+                }
+            }
+        },
+
+        scales: {
+            x: {
+                ticks: {
+                    color: "#cbd5e1"
+                },
+                grid: {
+                    color: "rgba(255,255,255,0.03)"
+                }
+            },
+
+            y: {
+                ticks: {
+                    color: "#cbd5e1"
+                },
+                grid: {
+                    color: "rgba(255,255,255,0.04)"
+                }
+            }
+        },
+
+        animation: {
+            duration: 1400,
+            easing: "easeOutQuart"
+        }
+    }
+});
+
+document.querySelector(".chart-wrap").classList.add("show");
+
+document.getElementById("resultBox").classList.add("show");
+
+    }
+    catch(error){
+    console.log(error);
+    alert(error);
+}
+}
+
+window.onload = function(){
+
+    if(localStorage.getItem("balance")){
+        document.getElementById("balance").value =
+            localStorage.getItem("balance");
+    }
+
+    if(localStorage.getItem("expenses")){
+        document.getElementById("expenses").value =
+            localStorage.getItem("expenses");
+    }
+
+    if(localStorage.getItem("cutAmount")){
+        document.getElementById("cutAmount").value =
+            localStorage.getItem("cutAmount");
+    }
+
+    if(localStorage.getItem("surviveDays")){
+        document.getElementById("surviveDays").value =
+            localStorage.getItem("surviveDays");
+    }
+}
+
+function clearSavedData(){
+
+    localStorage.removeItem("balance");
+    localStorage.removeItem("expenses");
+    localStorage.removeItem("cutAmount");
+    localStorage.removeItem("surviveDays");
+
+    document.getElementById("balance").value = "";
+    document.getElementById("expenses").value = "";
+    document.getElementById("cutAmount").value = "";
+    document.getElementById("surviveDays").value = "";
+
+    alert("Saved data cleared.");
+}
+
+
+</script>
+
+</body>
+</html>
