@@ -6,8 +6,8 @@ A smart full-stack personal finance web application that helps users predict how
 
 ## 🚀 Live Demo
 
-Frontend: [Add Your Vercel Link Here]  
-Backend API Docs: [Add Your Render /docs Link Here]
+Frontend: [https://expense-crash-predictor.vercel.app/]  
+Backend API Docs: [https://expense-backend-anh3.onrender.com/docs]
 
 ---
 
@@ -20,7 +20,7 @@ WalletGuard AI focuses on **prevention** by helping users understand:
 - how many days their money may last
 - whether spending pace is risky
 - where unusual expense spikes happened
-- how savings changes future runway
+- how savings change future runway
 - overall wallet health score
 
 ---
