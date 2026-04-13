@@ -72,7 +72,21 @@ Visualize spending trends instantly.
 | Version Control | Git + GitHub |
 
 ---
+## 📸 Screenshots
 
+### Dashboard
+![Dashboard](assets/Dashboard.png)
+
+### Wallet Score
+![Wallet Score](assets/Wallet-Score.png)
+
+### Analytics Chart
+![Chart](assets/Chart.png)
+
+### Mobile View
+![Mobile](assets/Mobile-View.png)
+
+---
 ## 📂 Structure
 
 ```bash
