@@ -14,9 +14,9 @@ Smart AI-powered personal finance assistant for budgeting, spending control, and
 
 | Platform | Link |
 |---|---|
-| 🚀 Frontend | YOUR_VERCEL_LINK |
+| 🚀 Frontend |https://expense-crash-predictor.vercel.app/|
 | ⚙️ Backend API Docs | https://expense-backend-anh3.onrender.com/docs |
-| 💻 Repository | YOUR_GITHUB_REPO_LINK |
+| 💻 Repository |https://github.com/visheshdebugger/Expense-Crash-Predictor.git|
 
 ---
 
